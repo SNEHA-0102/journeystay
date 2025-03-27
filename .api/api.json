@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "locationiq",
+      "source": "@locationiq/v1.0#18bz97ovm1jb95cm",
+      "integrity": "sha512-WLR86hA64XlUtZE+zp7DXcZsegLSc9Flh2138NaHC5hQVlgyZNoM+ZyI/QdEfJ4YwhtMMCLC89FKSYfZz6KDFg==",
+      "installerVersion": "6.1.3"
+    }
+  ]
+}

@@ -1,0 +1,324 @@
+<%- layout("/layouts/boilerplate") %>
+<div class="container-fluid unique-destinations-container">
+    <h1 class="text-center mb-5 display-4">Extraordinary Destinations</h1>
+    <h2 class="text-center mb-5 lead text-muted">Discover the Most Unique Places on Earth</h2>
+    
+    <div class="row justify-content-center">
+        <% 
+        const uniqueDestinations = [
+            {
+                title: "Cappadocia, Turkey",
+                description: "Surreal landscape of fairy chimneys and hot air balloons",
+                uniqueFact: "Underground cities and rock-hewn churches",
+                rating: 4.9,
+                averagePrice: 299,
+                icon: "bi-cloud-fill",
+                bgClass: "bg-rock-formation",
+                imageUrl: "/images/cappadocia.jpg",
+                travelType: "Adventure & Culture"
+            },
+            {
+                title: "Salar de Uyuni, Bolivia",
+                description: "World's largest salt flat - a mirror-like natural wonder",
+                uniqueFact: "Reflects the sky like a giant mirror during rain",
+                rating: 4.8,
+                averagePrice: 399,
+                icon: "bi-water",
+                bgClass: "bg-salt-flat",
+                imageUrl: "/images/salar-de-uyuni.jpg",
+                travelType: "Natural Wonder"
+            },
+            {
+                title: "Zhangjiajie, China",
+                description: "Breathtaking stone pillars that inspired Avatar's landscape",
+                uniqueFact: "World's first glass-bottom bridge",
+                rating: 4.7,
+                averagePrice: 349,
+                icon: "bi-mountains",
+                bgClass: "bg-mountain-pillars",
+                imageUrl: "/images/zhangjiajie.jpg",
+                travelType: "Geological Marvel"
+            },
+            {
+                title: "Socotra Island, Yemen",
+                description: "Alien-like landscape with dragon blood trees",
+                uniqueFact: "Often called the most alien-looking place on Earth",
+                rating: 4.6,
+                averagePrice: 449,
+                icon: "bi-tree-fill",
+                bgClass: "bg-alien-landscape",
+                imageUrl: "/images/socotra.jpg",
+                travelType: "Botanical Paradise"
+            },
+            {
+                title: "Antelope Canyon, USA",
+                description: "A mesmerizing slot canyon with flowing sandstone formations",
+                uniqueFact: "Famous for its stunning light beams and wave-like structures",
+                rating: 4.9,
+                averagePrice: 199,
+                icon: "bi-camera",
+                bgClass: "bg-slot-canyon",
+                imageUrl: "/images/antelope-canyon.jpg",
+                travelType: "Photographer's Paradise"
+            },
+            {
+                title: "Great Blue Hole, Belize",
+                description: "A giant marine sinkhole, perfect for deep diving exploration",
+                uniqueFact: "One of the top diving spots in the world with crystal-clear waters",
+                rating: 4.8,
+                averagePrice: 499,
+                icon: "bi-water",
+                bgClass: "bg-marine-sinkhole",
+                imageUrl: "/images/great-blue-hole.jpg",
+                travelType: "Diving & Adventure"
+            }            
+        ];
+
+        uniqueDestinations.forEach(destination => { %>
+            <div class="col-12 col-md-6 col-lg-4 mb-5">
+                <div class="unique-destination-card <%= destination.bgClass %>">
+                    <div class="unique-destination-badge">
+                        <i class="bi bi-star-fill text-warning"></i> <%= destination.rating %>
+                    </div>
+                    <div class="unique-destination-image">
+                        <img src="<%= destination.imageUrl %>" alt="<%= destination.title %>">
+                    </div>
+                    <div class="unique-destination-content">
+                        <div class="unique-destination-header">
+                            <h3 class="unique-destination-title"><%= destination.title %></h3>
+                            <span class="unique-travel-type"><%= destination.travelType %></span>
+                        </div>
+                        <p class="unique-destination-description"><%= destination.description %></p>
+                        <div class="unique-destination-fact">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <%= destination.uniqueFact %>
+                        </div>
+                        <div class="unique-destination-details">
+                            <div class="unique-destination-icon">
+                                <i class="bi <%= destination.icon %>"></i>
+                            </div>
+                            <div class="unique-destination-pricing">
+                                <span class="average-price">From $<%= destination.averagePrice %></span>
+                                <a href="#" class="discover-btn">Discover More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <h3 class="mb-4">Want to Explore More Unique Destinations?</h3>
+            <a href="#" class="btn btn-primary btn-lg custom-explore-btn">
+                View Full Destination Catalog
+                <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .unique-destinations-container {
+        max-width: 1600px;
+        padding: 30px 15px;
+        background-color: #f8f9fa;
+    }
+
+    .unique-destination-card {
+        position: relative;
+        border-radius: 25px;
+        overflow: hidden;
+        color: white;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .unique-destination-card:hover {
+        transform: scale(1.035);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    }
+
+    .unique-destination-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: rgba(255,255,255,0.9);
+        color: #333;
+        padding: 10px 15px;
+        border-radius: 25px;
+        z-index: 10;
+        font-weight: bold;
+    }
+
+    .unique-destination-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .unique-destination-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.6);
+        transition: transform 0.3s ease;
+    }
+
+    .unique-destination-card:hover .unique-destination-image img {
+        transform: scale(1.1);
+    }
+
+    .unique-destination-content {
+        position: relative;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 100%;
+        padding: 30px;
+        background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    }
+
+    .unique-destination-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .unique-destination-title {
+        font-size: 2.5rem;
+        margin-bottom: 0;
+        font-weight: bold;
+    }
+
+    .unique-travel-type {
+        background-color: rgba(255,255,255,0.2);
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .unique-destination-description {
+        margin-bottom: 15px;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+
+    .unique-destination-fact {
+        background-color: rgba(255,255,255,0.1);
+        padding: 15px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        font-style: italic;
+    }
+
+    .unique-destination-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .unique-destination-icon {
+        font-size: 3rem;
+        opacity: 0.8;
+    }
+
+    .unique-destination-pricing {
+        display: flex;
+        align-items: center;
+    }
+
+    .average-price {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-right: 20px;
+    }
+
+    .discover-btn {
+        display: inline-block;
+        background-color: white;
+        color: #007bff;
+        padding: 12px 25px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .discover-btn:hover {
+        background-color: #f0f0f0;
+        transform: translateX(5px);
+    }
+
+    .custom-explore-btn {
+        padding: 15px 30px;
+        border-radius: 40px;
+        font-size: 1.2rem;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    /* Background Gradients */
+    .bg-rock-formation {
+        background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    }
+
+    .bg-salt-flat {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+    }
+
+    .bg-mountain-pillars {
+        background: linear-gradient(135deg, #283048, #859398);
+    }
+
+    .bg-alien-landscape {
+        background: linear-gradient(135deg, #2c3e50, #3498db);
+    }
+
+    .bg-slot-canyon {
+        background: linear-gradient(135deg, #6d9100, #ddff78);
+    }
+    
+    .bg-marine-sinkhole {
+        background: linear-gradient(135deg, #007991, #78ffd6);
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .unique-destination-card {
+            height: 500px;
+        }
+
+        .unique-destination-title {
+            font-size: 2rem;
+        }
+
+        .unique-destination-description {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .unique-destination-card {
+            height: 450px;
+        }
+
+        .unique-destination-title {
+            font-size: 1.5rem;
+        }
+
+        .unique-travel-type {
+            font-size: 0.8rem;
+        }
+    }
+</style>

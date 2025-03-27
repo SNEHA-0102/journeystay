@@ -1,0 +1,176 @@
+<%- layout("/layouts/boilerplate") %>
+<div class="container profile-container">
+    <div class="profile-header text-center mb-5">
+        <div class="profile-image-wrapper">
+            <img 
+             src="/images/user-avatar.jpg" alt="User Profile" class="profile-avatar"
+
+                alt="User Profile" 
+                class="profile-avatar"
+            >
+            <div class="profile-status-badge">
+                <i class="bi bi-check-circle-fill text-success"></i> Verified
+            </div>
+        </div>
+        <h1 class="mt-4 display-5">John Doe</h1>
+        <p class="text-muted">Travel Enthusiast & Adventure Seeker</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="profile-card bg-user-details">
+                <h3 class="card-title">
+                    <i class="bi bi-person-circle me-2"></i>Personal Information
+                </h3>
+                <div class="profile-detail-row">
+                    <span class="detail-label">Full Name</span>
+                    <span class="detail-value">John Alexander Doe</span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="detail-label">Username</span>
+                    <span class="detail-value">john_traveler</span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="detail-label">Email</span>
+                    <span class="detail-value">john.doe@journeystay.com</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="profile-card bg-travel-stats">
+                <h3 class="card-title">
+                    <i class="bi bi-geo-alt me-2"></i>Travel Stats
+                </h3>
+                <div class="profile-detail-row">
+                    <span class="detail-label">Trips Taken</span>
+                    <span class="detail-value">24</span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="detail-label">Countries Visited</span>
+                    <span class="detail-value">12</span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="detail-label">Member Since</span>
+                    <span class="detail-value">March 2023</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="profile-card bg-booking-history">
+                <h3 class="card-title">
+                    <i class="bi bi-calendar-check me-2"></i>Booking History
+                </h3>
+                <div class="profile-detail-row">
+                    <span class="detail-label">Total Bookings</span>
+                    <span class="detail-value">18</span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="detail-label">Upcoming Trips</span>
+                    <span class="detail-value">3</span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="detail-label">Last Booking</span>
+                    <span class="detail-value">Bali, Indonesia</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/profile/edit" class="btn btn-primary me-3">
+            <i class="bi bi-pencil-square me-2"></i>Edit Profile
+        </a>
+        <a href="/bookings" class="btn btn-outline-secondary">
+            <i class="bi bi-list-task me-2"></i>My Bookings
+        </a>
+    </div>
+</div>
+
+<style>
+    .profile-container {
+        max-width: 1200px;
+        padding: 30px 15px;
+    }
+
+    .profile-image-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid white;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+    .profile-status-badge {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background-color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+    }
+
+    .profile-card {
+        background: linear-gradient(135deg, #f5f7fa, #e6e9f0);
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .profile-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .card-title {
+        border-bottom: 2px solid rgba(0,0,0,0.1);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .profile-detail-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .detail-label {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .detail-value {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .bg-user-details {
+        background: linear-gradient(135deg, #f6d365, #fda085);
+    }
+
+    .bg-travel-stats {
+        background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    }
+
+    .bg-booking-history {
+        background: linear-gradient(135deg, #84fab0, #8fd3f4);
+    }
+
+    @media (max-width: 768px) {
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+        }
+    }
+</style>

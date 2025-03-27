@@ -1,0 +1,236 @@
+<%- layout("/layouts/boilerplate") %>
+<div class="container deals-container">
+    <h1 class="text-center mb-5 display-4">Current Special Deals</h1>
+    
+    <div class="row justify-content-center">
+        <% 
+        const specialDeals = [
+            {
+                title: "Summer Beach Getaway",
+                description: "Exclusive beachfront properties at unbeatable prices",
+                price: 299,
+                originalPrice: 449,
+                discount: 33,
+                icon: "bi-sun-fill",
+                bgClass: "bg-beach",
+                image: "/images/beach.jpg"
+            },
+            {
+                title: "Mountain Retreat Discount",
+                description:"Cozy cabins with stunning mountain views and fresh air",
+                price: 199,
+                originalPrice: 299,
+                discount: 33,
+                icon: "bi-mountains",
+                bgClass: "bg-mountain",
+                image: "/images/moutain.jpg"
+            },
+            {
+                title: "City Explorer Package",
+                description:"Modern urban apartments in prime locations and close to top attractions.",
+                price: 149,
+                originalPrice: 249,
+                discount: 40,
+                icon: "bi-buildings-fill",
+                bgClass: "bg-city",
+                image: "/images/city.jpg"
+            },
+            {
+                title: "Luxury Cruise Escape",
+                description: "Sail away on a luxurious cruise with all-inclusive perks",
+                price: 499,
+                originalPrice: 699,
+                discount: 29,
+                icon: "bi-ship",
+                bgClass: "bg-cruise",
+                image: "/images/cruise.jpg"
+            },
+            {
+                title: "Desert Safari Adventure",
+                description: "Experience the thrill of desert dunes and cultural heritage",
+                price: 129,
+                originalPrice: 199,
+                discount: 35,
+                icon: "bi-tree-fill",
+                bgClass: "bg-desert",
+                image: "/images/desert.jpg"
+            },
+            {
+                title: "Jungle Safari Tour",
+                description: "Explore the wild with expert guides and luxury stays",
+                price: 249,
+                originalPrice: 399,
+                discount: 38,
+                icon: "bi-binoculars-fill",
+                bgClass: "bg-jungle",
+                image: "/images/safari.jpg"
+            },
+            {
+                title: "Romantic Paris Escape",
+                description: "A romantic trip to the city of love with premium accommodations",
+                price: 599,
+                originalPrice: 899,
+                discount: 33,
+                icon: "bi-heart-fill",
+                bgClass: "bg-paris",
+                image: "/images/paris.jpg"
+            },
+            {
+                title: "Island Paradise Retreat",
+                description: "A tropical getaway with breathtaking beaches and luxury resorts",
+                price: 349,
+                originalPrice: 499,
+                discount: 30,
+                icon: "bi-water",
+                bgClass: "bg-island",
+                image: "/images/island.jpg"
+            }
+        ];
+
+        specialDeals.forEach(deal => { %>
+            <div class="col-md-4 mb-4">
+                <div class="deal-card <%= deal.bgClass %>">
+                    <img src="<%= deal.image %>" alt="<%= deal.title %>" class="deal-image">
+                    <div class="deal-badge">
+                        <%= deal.discount %>% OFF
+                    </div>
+                    <div class="deal-icon">
+                        <i class="bi <%= deal.icon %>"></i>
+                    </div>
+                    <h3 class="deal-title"><%= deal.title %></h3>
+                    <p class="deal-description"><%= deal.description %></p>
+                    <div class="deal-pricing">
+                        <span class="current-price">$<%= deal.price %></span>
+                        <span class="original-price">$<%= deal.originalPrice %></span>
+                    </div>
+                    <a href="#" class="book-now-btn">Book Now</a>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
+<style>
+    .deals-container {
+        max-width: 1200px;
+        padding: 20px;
+    }
+
+    .deal-card {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        padding: 20px;
+        color: white;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        background-color: #333;
+        text-align: center;
+    }
+
+    .deal-card:hover {
+        transform: scale(1.05);
+    }
+
+    .deal-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+
+    .deal-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: white;
+        color: red;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+
+    .deal-icon {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        opacity: 0.8;
+    }
+
+    .deal-title {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .deal-description {
+        margin-bottom: 15px;
+        opacity: 0.9;
+    }
+
+    .deal-pricing {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .current-price {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #ffd700;
+    }
+
+    .original-price {
+        text-decoration: line-through;
+        opacity: 0.7;
+        font-size: 1.2rem;
+    }
+
+    .book-now-btn {
+        display: inline-block;
+        background-color: white;
+        color: #007bff;
+        padding: 10px 20px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .book-now-btn:hover {
+        background-color: #f0f0f0;
+    }
+
+    .bg-beach {
+        background: linear-gradient(135deg, #2980b9, #6dd5fa);
+    }
+
+    .bg-mountain {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+    }
+
+    .bg-city {
+        background: linear-gradient(135deg, #283048, #859398);
+    }
+
+    .bg-cruise {
+        background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    }
+
+    .bg-desert {
+        background: linear-gradient(135deg, #d1913c, #ffd194);
+    }
+
+    .bg-jungle {
+        background: linear-gradient(135deg, #155799, #159957);
+    }
+
+    .bg-paris {
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    }
+
+    .bg-island {
+        background: linear-gradient(135deg, #00c6fb, #005bea);
+    }
+</style>

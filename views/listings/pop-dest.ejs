@@ -1,0 +1,250 @@
+<%- layout("/layouts/boilerplate") %>
+<div class="container destinations-container">
+    <h1 class="text-center mb-5 display-4">Popular Destinations</h1>
+    
+    <div class="row justify-content-center">
+        <% 
+        const popularDestinations = [
+            {
+                title: "Bali, Indonesia",
+                description: "Tropical paradise with stunning beaches and vibrant culture",
+                rating: 4.8,
+                averagePrice: 199,
+                icon: "bi-umbrella",
+                bgClass: "bg-tropical",
+                imageUrl: "/images/bali.jpg"
+            },
+            {
+                title: "Swiss Alps",
+                description: "Breathtaking mountain scenery and world-class skiing",
+                rating: 4.9,
+                averagePrice: 349,
+                icon: "bi-snow3",
+                bgClass: "bg-alpine",
+                imageUrl: "/images/swiss-alps.jpg"
+            },
+            {
+                title: "Tokyo, Japan",
+                description: "Modern metropolis blending tradition and innovation",
+                rating: 4.7,
+                averagePrice: 279,
+                icon: "bi-buildings-fill",
+                bgClass: "bg-urban",
+                imageUrl: "/images/tokyo.jpg"
+            },
+            {
+                title: "Maldives",
+                description: "Luxurious island paradise with crystal clear waters",
+                rating: 4.9,
+                averagePrice: 499,
+                icon: "bi-water",
+                bgClass: "bg-island",
+                imageUrl: "/images/maldives.jpg"
+            },
+            {
+                title: "Paris, France",
+                description: "The city of love with iconic landmarks and rich culture",
+                rating: 4.8,
+                averagePrice: 399,
+                icon: "bi-eiffel-tower",
+                bgClass: "bg-paris",
+                imageUrl: "/images/paris.jpg"
+            },
+            {
+                title: "Sydney, Australia",
+                description: "Famous for its Opera House, beaches, and vibrant city life",
+                rating: 4.7,
+                averagePrice: 299,
+                icon: "bi-sun",
+                bgClass: "bg-sydney",
+                imageUrl: "/images/sydney.jpg"
+            }
+        ];
+
+        popularDestinations.forEach(destination => { %>
+            <div class="col-md-6 col-lg-4 mb-5">
+                <div class="destination-card <%= destination.bgClass %>">
+                    <div class="destination-badge">
+                        <i class="bi bi-star-fill text-warning"></i> <%= destination.rating %>
+                    </div>
+                    <div class="destination-image">
+                        <img src="<%= destination.imageUrl %>" alt="<%= destination.title %>">
+                    </div>
+                    <div class="destination-content">
+                        <h3 class="destination-title"><%= destination.title %></h3>
+                        <p class="destination-description"><%= destination.description %></p>
+                        <div class="destination-details">
+                            <div class="destination-icon">
+                                <i class="bi <%= destination.icon %>"></i>
+                            </div>
+                            <div class="destination-pricing">
+                                <span class="average-price">From $<%= destination.averagePrice %></span>
+                                <a href="#" class="explore-btn">Explore</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
+<style>
+    .destinations-container {
+        max-width: 1400px;
+        padding: 30px 15px;
+    }
+
+    .destination-card {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        color: white;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .destination-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .destination-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: rgba(255,255,255,0.9);
+        color: #333;
+        padding: 8px 15px;
+        border-radius: 20px;
+        z-index: 10;
+        font-weight: bold;
+    }
+
+    .destination-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .destination-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.7);
+        transition: transform 0.3s ease;
+    }
+
+    .destination-card:hover .destination-image img {
+        transform: scale(1.1);
+    }
+
+    .destination-content {
+        position: relative;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 100%;
+        padding: 25px;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    }
+
+    .destination-title {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .destination-description {
+        margin-bottom: 15px;
+        opacity: 0.9;
+        font-size: 1rem;
+    }
+
+    .destination-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .destination-icon {
+        font-size: 2.5rem;
+        opacity: 0.8;
+    }
+
+    .destination-pricing {
+        display: flex;
+        align-items: center;
+    }
+
+    .average-price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-right: 15px;
+    }
+
+    .explore-btn {
+        display: inline-block;
+        background-color: white;
+        color: #007bff;
+        padding: 10px 20px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .explore-btn:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* Background Gradients */
+    .bg-tropical {
+        background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    }
+
+    .bg-alpine {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+    }
+
+    .bg-urban {
+        background: linear-gradient(135deg, #283048, #859398);
+    }
+
+    .bg-island {
+        background: linear-gradient(135deg, #2c3e50, #3498db);
+    }
+
+    .bg-paris {
+        background: linear-gradient(135deg, #6e87a0, #135d8e);
+    }
+
+    .bg-sydney {
+        background: linear-gradient(135deg, #1e3c72, #a8c0ff);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .destination-card {
+            height: 400px;
+        }
+
+        .destination-title {
+            font-size: 1.5rem;
+        }
+
+        .destination-description {
+            font-size: 0.9rem;
+        }
+
+        .average-price {
+            font-size: 1.2rem;
+        }
+    }
+</style>

@@ -1,0 +1,141 @@
+<%- layout("/layouts/boilerplate") %>
+<div class="container bookings-container">
+    <div class="bookings-header text-center mb-5">
+        <h1 class="display-5">
+            <i class="bi bi-list-task me-2"></i>My Bookings
+        </h1>
+        <p class="text-muted">Your Travel Adventures at a Glance</p>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="bookings-card bg-upcoming-trips">
+                <h3 class="card-title">
+                    <i class="bi bi-calendar-event me-2"></i>Upcoming Trips
+                </h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Destination</th>
+                                <th>Dates</th>
+                                <th>Booking Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Bali, Indonesia</td>
+                                <td>July 15-22, 2025</td>
+                                <td><span class="badge bg-success">Confirmed</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-2">Details</button>
+                                    <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tokyo, Japan</td>
+                                <td>September 5-12, 2025</td>
+                                <td><span class="badge bg-warning">Pending</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-2">Details</button>
+                                    <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Paris, France</td>
+                                <td>November 20-28, 2025</td>
+                                <td><span class="badge bg-success">Confirmed</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-2">Details</button>
+                                    <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mt-4">
+            <div class="bookings-card bg-past-trips">
+                <h3 class="card-title">
+                    <i class="bi bi-check-circle me-2"></i>Past Trips
+                </h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Destination</th>
+                                <th>Dates</th>
+                                <th>Booking Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Maldives</td>
+                                <td>March 10-17, 2025</td>
+                                <td><span class="badge bg-secondary">Completed</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">View Receipt</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>New Zealand</td>
+                                <td>January 5-15, 2025</td>
+                                <td><span class="badge bg-secondary">Completed</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">View Receipt</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bookings-container {
+        max-width: 1200px;
+        padding: 30px 15px;
+    }
+
+    .bookings-card {
+        background: linear-gradient(135deg, #f5f7fa, #e6e9f0);
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .bookings-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-title {
+        border-bottom: 2px solid rgba(0,0,0,0.1);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .bg-upcoming-trips {
+        background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    }
+
+    .bg-past-trips {
+        background: linear-gradient(135deg, #84fab0, #8fd3f4);
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table th {
+        background-color: rgba(255,255,255,0.2);
+        color: #333;
+    }
+</style>

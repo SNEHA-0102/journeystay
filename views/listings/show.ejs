@@ -1,0 +1,107 @@
+<% layout("/layouts/boilerplate")%>
+
+    <script>
+        const mapToken = "<%= process.env.MAP_TOKEN %>";
+    </script>
+
+    <div class="row justify-content-center my-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <!-- Image Section -->
+                <div class="listing-image-container">
+                    <% if (listing.image && listing.image.url) { %>
+                        <img src="<%= listing.image.url %>" class="card-img-top listing-image"
+                            alt="<%= listing.title %>">
+                        <% } else { %>
+                            <img src="/images/default-listing.jpg" class="card-img-top listing-image"
+                                alt="Default listing image">
+                            <% } %>
+                </div>
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-home me-2 text-secondary"></i>
+                            Listing Details
+                        </h3>
+                        <span class="badge bg-success fs-5">
+                            ₹<%= listing && listing.price ? listing.price.toLocaleString("en-IN") : 0 %>
+                        </span>
+                    </div>
+
+                    <div class="listing-details">
+                        <div class="mb-3">
+                            <h4 class="text-primary mb-2">
+                                <%= listing.title %>
+                            </h4>
+                            <p class="text-muted">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                <%= listing.location && listing.location.address ? listing.location.address
+                                    : 'Location not specified' %>
+                            </p>
+                            <% if (listing.owner && listing.owner.username) { %>
+                                <p class="text-muted">
+                                    <i class="fas fa-user me-2"></i>
+                                    Listed by: <%= listing.owner.username %>
+                                </p>
+                                <% } %>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="text-secondary mb-2">Description</h5>
+                            <p class="card-text">
+                                <%= listing.description %>
+                            </p>
+                        </div>
+
+                        <!-- Edit/Delete Buttons Section - Only visible to listing owner -->
+                        <% if (currentUser && listing.owner && currentUser._id.equals(listing.owner._id)) { %>
+                            <div class="d-flex gap-2 mb-4">
+                                <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary">
+                                    <i class="fas fa-edit me-1"></i>
+                                    Edit Listing
+                                </a>
+                                <form class="d-inline" action="/listings/<%= listing._id %>?_method=DELETE"
+                                    method="POST">
+                                    <button class="btn btn-danger">
+                                        <i class="fas fa-trash me-1"></i>
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                            <% } %>
+
+
+                                <!-- Map Section -->
+                                <div class="mb-4">
+                                    <h3>Where you will be</h3>
+                                    <div id='map' style="width: 100%; height: 400px;"
+                                        data-coordinates='<%= listing.location && listing.location.coordinates ? JSON.stringify(listing.location.coordinates) : "[]" %>'
+                                        data-title="<%= listing.title %>">
+                                    </div>
+                                </div>
+
+                                <script>
+                                    // Declare the coordinates variable and log it
+                                    const coordinates = <%= listing.location && listing.location.coordinates ? JSON.stringify(listing.location.coordinates) : "[]" %>;
+                                    console.log("Coordinates:", coordinates);
+                                </script>
+
+                                <div class="d-flex">
+                                    <a href="/listings" class="btn btn-outline-secondary ms-auto">
+                                        <i class="fas fa-arrow-left me-1"></i>
+                                        Back to Listings
+                                    </a>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MapLibre GL JS Library -->
+    <link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
+    <script src='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js'></script>
+
+    <!-- Map Script -->
+    <script src="/js/map.js"></script>

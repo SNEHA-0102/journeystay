@@ -1,0 +1,125 @@
+<% layout("/layouts/boilerplate")%>
+<body>
+    <div class="listings-container">
+        <!-- Icons Bar Section -->
+        <div class="icons-bar d-flex justify-content-between overflow-auto mb-4 pb-2">
+            <div class="icon-category text-center">
+                <i class="fas fa-mountain"></i>
+                <span>Amazing views</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-th"></i>
+                <span>Icons</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-swimming-pool"></i>
+                <span>Amazing pools</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-tractor"></i>
+                <span>Farms</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-star"></i>
+                <span>New</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-umbrella-beach"></i>
+                <span>Islands</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-oil-can"></i>
+                <span>OMG!</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-water"></i>
+                <span>Beachfront</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-place-of-worship"></i>
+                <span>Lakefront</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-tree-city"></i>
+                <span>Tree-House</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-igloo"></i>
+                <span>Igloo</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-mug-saucer"></i>
+                <span>Bed & Breakfast</span>
+            </div>
+            <div class="icon-category text-center">
+                <i class="fas fa-snowflake"></i>
+                <span>Artic</span>
+            </div>
+        </div>
+
+        <div class="listings-header">
+            <h2>All Listings</h2>
+            <form method="GET" action="/listings/new">
+                <button class="btn btn-success">Create New Listing</button>
+            </form>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <% if (typeof listings !=='undefined' && listings.length> 0) { %>
+                <% for(let listing of listings) { %>
+                    <div class="col">
+                        <div class="card listing-card h-100">
+                            <% if (listing.image && listing.image.url) { %>
+                                <img src="<%= listing.image.url %>" class="card-img-top listing-image"
+                                    alt="<%= listing.title %>">
+                                <% } else { %>
+                                    <img src="/images/default-listing.jpg"
+                                        class="card-img-top listing-image" alt="default listing image">
+                                    <% } %>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a href="/listings/<%= listing._id %>" class="listing-link">
+                                                <%= listing.title %>
+                                            </a>
+                                        </h5>
+
+                                        <p class="card-text listing-description">
+                                            <%= listing.description ? (listing.description.length> 100 ?
+                                                listing.description.substring(0, 100) + '...' :
+                                                listing.description) : 'No description available' %>
+                                        </p>
+                                    </div>
+
+                                    <div class="card-footer">
+                                        <div class="listing-price">
+                                            <% if (listing.price) { %>
+                                                <span class="badge bg-success">₹<%=
+                                                        listing.price.toLocaleString() %></span>
+                                                <small class="text-muted">/night</small>
+                                                <% } %>
+                                        </div>
+
+                                        <% if (listing.location || listing.country) { %>
+                                            <div class="listing-location">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <%= listing.location || '' %>
+                                                    <%= listing.location && listing.country ? ', ' : ''
+                                                        %>
+                                                        <%= listing.country || '' %>
+                                            </div>
+                                            <% } %>
+                                    </div>
+                        </div>
+                    </div>
+                    <% } %>
+                    <% } else { %>
+                        <div class="col-12">
+                            <div class="alert alert-info" role="alert">
+                                No listings found.
+                            </div>
+                        </div>
+                        <% } %>
+        </div>
+    </div>
+</body>
