@@ -434,3 +434,101 @@ margin-bottom: 20px;
 .search-form input {
     padding-right: 50px !important; /* Make room for the smaller button */
 }
+
+
+/* navbar */
+@media (max-width: 991.98px) {
+    .navbar {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    /* Add nicer touch targets for mobile */
+    .navbar-nav .nav-link,
+    .dropdown-item {
+      padding: 0.75rem 1rem;
+    }
+
+    /* Improve mobile dropdown appearance */
+    .dropdown-menu {
+      border: none;
+      background-color: #f8f9fa;
+      padding: 0;
+      margin-top: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .dropdown-item {
+      padding-left: 2rem;
+    }
+
+    /* Mobile menu dividers */
+    .navbar .d-lg-none .d-block:not(:last-child) {
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    /* Prevent navbar from hiding content */
+    body {
+      padding-top: 56px;
+    }
+
+    /* Adjust search collapse styling */
+    #searchCollapse {
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      z-index: 1030;
+    }
+
+    #searchCollapse .form-control {
+      height: 42px;
+    }
+
+    /* Mobile action buttons */
+    .navbar .btn-sm {
+      padding: 0.25rem 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+    }
+
+    /* Better spacing for collapsed menu items */
+    .navbar-collapse {
+      margin-top: 0.5rem;
+    }
+  }
+
+  /* Enhance category filter tabs for mobile */
+  .nav-filters {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 5px;
+    margin-bottom: 1rem;
+  }
+
+  .nav-filters::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .nav-filters::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 4px;
+  }
+
+  .nav-filters .nav-item {
+    display: inline-block;
+    float: none;
+  }
+
+  /* Make "Create New Listing" button responsive */
+  @media (max-width: 576px) {
+    .btn-create-listing {
+      display: block;
+      width: 100%;
+    }
+  }
