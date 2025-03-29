@@ -101,13 +101,14 @@ app.use((req, res, next) => {
     next();
 });
 
-
-
 // Routes - Import after middleware is set up
 const listingRouter = require("./public/routes/listings.js");
 const userRouter = require("./public/routes/user.js");
 
-
+// Home Route - Fix for "Can't find / on the server!"
+app.get("/", (req, res) => {
+    res.render("home");  // Ensure 'views/home.ejs' exists
+});
 
 // Routes Configuration
 app.use("/", userRouter);
@@ -115,39 +116,30 @@ app.use("/listings", listingRouter);
 
 app.get('/special-deals', (req, res) => {
     res.render('listings/special-deals'); 
-
 });
+
 app.get('/pop-dest', (req, res) => {
     res.render('listings/pop-dest'); 
 });
+
 app.get('/uni-dest', (req, res) => {
     res.render('listings/uni-dest');  
 });
+
 app.get('/profile', (req, res) => {
     res.render('listings/profile');  
 });
+
 app.get('/settings', (req, res) => {
     res.render('listings/settings');  
 });
+
 app.get('/my-bookings', (req, res) => {
     res.render('listings/my-bookings');  
 });
 
-
-
-// 404 Handler with specific handling for listing routes
+// 404 Handler for Invalid Routes
 app.all("*", (req, res, next) => {
-    if (req.originalUrl.startsWith('/listings/') && req.originalUrl.split('/').length === 3) {
-        const listingId = req.originalUrl.split('/')[2];
-
-        if (mongoose.Types.ObjectId.isValid(listingId)) {
-            return next();
-        }
-
-        req.flash("error", "Invalid listing ID format");
-        return res.redirect("/listings");
-    }
-
     const error = new Error(`Can't find ${req.originalUrl} on the server!`);
     error.status = 404;
     next(error);

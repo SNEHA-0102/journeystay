@@ -1,0 +1,164 @@
+<% layout("/layouts/boilerplate")%>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="row hero-section py-5 mb-4">
+            <div class="col-md-6 d-flex flex-column justify-content-center">
+                <h1 class="display-4 fw-bold">Find your perfect getaway</h1>
+                <p class="lead mb-4">Discover unique places to stay and unforgettable experiences around the world.</p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <a href="/listings" class="btn btn-primary btn-lg px-4 me-md-2">Browse Listings</a>
+                    <a href="/listings/new" class="btn btn-outline-secondary btn-lg px-4">Host Your Place</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <img src="/images/hero-image.jpg" alt="Beautiful vacation rental" class="img-fluid rounded shadow-lg">
+            </div>
+        </div>
+
+        <!-- Featured Categories -->
+        <h2 class="text-center mb-4">Explore by Category</h2>
+        <div class="icons-bar d-flex justify-content-between overflow-auto mb-5 pb-2">
+            <div class="icon-category text-center mx-2">
+                <div class="category-icon-circle mb-2">
+                    <i class="fas fa-mountain"></i>
+                </div>
+                <span>Amazing views</span>
+            </div>
+            <div class="icon-category text-center mx-2">
+                <div class="category-icon-circle mb-2">
+                    <i class="fas fa-swimming-pool"></i>
+                </div>
+                <span>Amazing pools</span>
+            </div>
+            <div class="icon-category text-center mx-2">
+                <div class="category-icon-circle mb-2">
+                    <i class="fas fa-umbrella-beach"></i>
+                </div>
+                <span>Islands</span>
+            </div>
+            <div class="icon-category text-center mx-2">
+                <div class="category-icon-circle mb-2">
+                    <i class="fas fa-water"></i>
+                </div>
+                <span>Beachfront</span>
+            </div>
+            <div class="icon-category text-center mx-2">
+                <div class="category-icon-circle mb-2">
+                    <i class="fas fa-tree-city"></i>
+                </div>
+                <span>Tree-House</span>
+            </div>
+            <div class="icon-category text-center mx-2">
+                <div class="category-icon-circle mb-2">
+                    <i class="fas fa-igloo"></i>
+                </div>
+                <span>Igloo</span>
+            </div>
+        </div>
+
+        <!-- Featured Listings -->
+        <h2 class="text-center mb-4">Featured Destinations</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+            <% if (typeof featuredListings !=='undefined' && featuredListings && featuredListings.length> 0) { %>
+                <% for(let listing of featuredListings.slice(0, 6)) { %>
+                    <div class="col">
+                        <div class="card listing-card h-100 shadow-sm">
+                            <% if (listing.image && listing.image.url) { %>
+                                <img src="<%= listing.image.url %>" class="card-img-top listing-image"
+                                    alt="<%= listing.title %>">
+                            <% } else { %>
+                                <img src="/images/default-listing.jpg"
+                                    class="card-img-top listing-image" alt="default listing image">
+                            <% } %>
+
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="/listings/<%= listing._id %>" class="listing-link">
+                                        <%= listing.title %>
+                                    </a>
+                                </h5>
+
+                                <p class="card-text listing-description">
+                                    <%= listing.description ? (listing.description.length> 100 ?
+                                        listing.description.substring(0, 100) + '...' :
+                                        listing.description) : 'No description available' %>
+                                </p>
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="listing-price">
+                                    <% if (listing.price) { %>
+                                        <span class="badge bg-success">₹<%= listing.price.toLocaleString() %></span>
+                                        <small class="text-muted">/night</small>
+                                    <% } %>
+                                </div>
+
+                                <% if (listing.location || listing.country) { %>
+                                    <div class="listing-location">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <%= listing.location || '' %>
+                                        <%= listing.location && listing.country ? ', ' : '' %>
+                                        <%= listing.country || '' %>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <div class="col-12 text-center">
+                    <p>Featured listings coming soon!</p>
+                    <a href="/listings" class="btn btn-primary">View All Listings</a>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- How It Works Section -->
+        <h2 class="text-center mb-4">How It Works</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+            <div class="col">
+                <div class="card h-100 border-0 text-center">
+                    <div class="card-body">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-search fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Find the perfect place</h5>
+                        <p class="card-text">Browse through our extensive collection of unique properties around the world.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 border-0 text-center">
+                    <div class="card-body">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-calendar-check fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Book with confidence</h5>
+                        <p class="card-text">Secure booking system with reviews and ratings from verified guests.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 border-0 text-center">
+                    <div class="card-body">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-suitcase fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Enjoy your stay</h5>
+                        <p class="card-text">Experience the comfort of a home with the luxury of a hotel.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="row cta-section py-5 mb-4 bg-light rounded">
+            <div class="col-12 text-center">
+                <h2 class="mb-3">Ready to find your next adventure?</h2>
+                <p class="mb-4">Join thousands of travelers who have found their perfect getaway with us.</p>
+                <a href="/listings" class="btn btn-primary btn-lg">Start Exploring</a>
+            </div>
+        </div>
+    </div>
+</body>
