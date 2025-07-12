@@ -12,6 +12,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
+
 // Models
 const Listing = require("./models/listing.js");
 const User = require("./models/user.js");
@@ -103,6 +104,44 @@ app.use((req, res, next) => {
     next();
 });
 
+app.get("/search", wrapAsync(async (req, res) => {
+  const query = req.query.query;
+  
+  // If no query provided, redirect to listings
+  if (!query || query.trim() === '') {
+    req.flash("error", "Please enter a search term");
+    return res.redirect("/listings");
+  }
+
+  try {
+    console.log(`Searching for: "${query}"`);
+
+    // Search in both title and location.address fields
+    const listings = await Listing.find({
+      $or: [
+        { title: { $regex: new RegExp(query.trim(), "i") } },
+        { "location.address": { $regex: new RegExp(query.trim(), "i") } }
+      ]
+    });
+
+    console.log(`Found ${listings.length} listings for search: "${query}"`);
+
+    // Render the same index template with search context
+    res.render("listings/index", { 
+      listings,
+      searchQuery: query.trim(),
+      isSearchResult: true
+    });
+    
+  } catch (error) {
+    console.error("Search error:", error);
+    req.flash("error", "An error occurred while searching. Please try again.");
+    res.redirect("/listings");
+  }
+}));
+
+
+
 // Routes
 const listingRouter = require("./public/routes/listings.js");
 const userRouter = require("./public/routes/user.js");
@@ -123,6 +162,39 @@ app.get("/uni-dest", (req, res) => res.render("listings/uni-dest"));
 app.get("/profile", (req, res) => res.render("listings/profile"));
 app.get("/settings", (req, res) => res.render("listings/settings"));
 app.get("/my-bookings", (req, res) => res.render("listings/my-bookings"));
+
+
+// Add this debug middleware to your app.js to see all registered routes
+// Place this RIGHT AFTER your route definitions
+
+app.use((req, res, next) => {
+    console.log(`🔍 Incoming request: ${req.method} ${req.originalUrl}`);
+    next();
+});
+
+// Also add this to list all registered routes (for debugging)
+app._router.stack.forEach(function(r){
+  if (r.route && r.route.path){
+    console.log(`📍 Registered route: ${Object.keys(r.route.methods)} ${r.route.path}`);
+  }
+});
+
+// If you want to see what routes are available, add this temporary route:
+app.get("/debug-routes", (req, res) => {
+    const routes = [];
+    app._router.stack.forEach(function(r){
+        if (r.route && r.route.path){
+            routes.push({
+                method: Object.keys(r.route.methods),
+                path: r.route.path
+            });
+        }
+    });
+    res.json(routes);
+});
+
+// Test your search route manually by visiting: http://localhost:10000/debug-routes
+
 
 // 404 Handler
 app.all("*", (req, res, next) => {
@@ -151,6 +223,7 @@ app.use((err, req, res, next) => {
 
     res.status(status).render("error.ejs", { error: err });
 });
+
 
 // Start Server
 const PORT = process.env.PORT || 10000;

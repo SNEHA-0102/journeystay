@@ -20,6 +20,10 @@ const validateObjectId = (req, res, next) => {
   next();
 };
 
+// Search route - Add this BEFORE the main router.route("/")
+router.get("/search", wrapAsync(listingController.searchListings));
+
+
 router.route("/")
   .get(wrapAsync(listingController.index)) // Show all listings
   .post(

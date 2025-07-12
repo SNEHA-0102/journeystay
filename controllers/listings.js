@@ -195,6 +195,44 @@ const deleteListing = async (req, res) => {
   }
 };
 
+
+// search  listing function
+const searchListings = async (req, res) => {
+  try {
+    const query = req.query.query;
+    
+    // If no query provided, redirect to listings
+    if (!query || query.trim() === '') {
+      req.flash("error", "Please enter a search term");
+      return res.redirect("/listings");
+    }
+
+    console.log(`Searching for: "${query}"`);
+
+    // Search in both title and location.address fields
+    const listings = await Listing.find({
+      $or: [
+        { title: { $regex: new RegExp(query.trim(), "i") } },
+        { "location.address": { $regex: new RegExp(query.trim(), "i") } }
+      ]
+    });
+
+    console.log(`Found ${listings.length} listings for search: "${query}"`);
+
+    // Render the same index template with search context
+    res.render("listings/index", { 
+      listings,
+      searchQuery: query.trim(),
+      isSearchResult: true
+    });
+    
+  } catch (error) {
+    console.error("Search error:", error);
+    req.flash("error", "An error occurred while searching. Please try again.");
+    res.redirect("/listings");
+  }
+};
+
 module.exports = {
   index,
   renderNewRoute,
@@ -202,5 +240,7 @@ module.exports = {
   showListing,
   editListing,
   updateListing,
-  deleteListing
+  deleteListing,
+  searchListings  
 };
+
