@@ -12,7 +12,6 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
-
 // Models
 const Listing = require("./models/listing.js");
 const User = require("./models/user.js");
@@ -90,9 +89,27 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Debugging Middleware
+// ADDED: Handle Chrome DevTools requests early (before logging)
 app.use((req, res, next) => {
-    console.log(`🔹 ${req.method} ${req.originalUrl}`);
+    // Silently handle Chrome DevTools and other browser requests
+    if (req.path.includes('/.well-known/') || 
+        req.path.includes('/favicon.ico') ||
+        req.path.includes('chrome-extension://') ||
+        req.path === '/robots.txt' ||
+        req.path === '/sitemap.xml') {
+        return res.status(404).end();
+    }
+    next();
+});
+
+// UPDATED: Debugging Middleware (now filters out unwanted requests)
+app.use((req, res, next) => {
+    // Only log actual application requests
+    if (!req.path.includes('/.well-known/') && 
+        !req.path.includes('/favicon.ico') &&
+        !req.path.includes('chrome-extension://')) {
+        console.log(`🔹 ${req.method} ${req.originalUrl}`);
+    }
     next();
 });
 
@@ -104,46 +121,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get("/search", wrapAsync(async (req, res) => {
-  const query = req.query.query;
-  
-  // If no query provided, redirect to listings
-  if (!query || query.trim() === '') {
-    req.flash("error", "Please enter a search term");
-    return res.redirect("/listings");
-  }
-
-  try {
-    console.log(`Searching for: "${query}"`);
-
-    // Search in both title and location.address fields
-    const listings = await Listing.find({
-      $or: [
-        { title: { $regex: new RegExp(query.trim(), "i") } },
-        { "location.address": { $regex: new RegExp(query.trim(), "i") } }
-      ]
-    });
-
-    console.log(`Found ${listings.length} listings for search: "${query}"`);
-
-    // Render the same index template with search context
-    res.render("listings/index", { 
-      listings,
-      searchQuery: query.trim(),
-      isSearchResult: true
-    });
-    
-  } catch (error) {
-    console.error("Search error:", error);
-    req.flash("error", "An error occurred while searching. Please try again.");
-    res.redirect("/listings");
-  }
-}));
-
-
-
 // Routes
-const listingRouter = require("./public/routes/listings.js");
 const userRouter = require("./public/routes/user.js");
 
 // Home Route
@@ -151,9 +129,68 @@ app.get("/", (req, res) => {
     res.render("home"); // Ensure 'views/home.ejs' exists
 });
 
+// FIXED: Listings route with integrated search functionality
+app.get("/listings", wrapAsync(async (req, res) => {
+    const searchTerm = req.query.search; // Match the frontend parameter name
+    let listings;
+    
+    try {
+        if (searchTerm && searchTerm.trim() !== '') {
+            console.log(`🔍 Searching for: "${searchTerm}"`);
+            
+            // Search in multiple fields
+            listings = await Listing.find({
+                $or: [
+                    { title: { $regex: new RegExp(searchTerm.trim(), "i") } },
+                    { description: { $regex: new RegExp(searchTerm.trim(), "i") } },
+                    { location: { $regex: new RegExp(searchTerm.trim(), "i") } },
+                    { country: { $regex: new RegExp(searchTerm.trim(), "i") } },
+                    { "location.address": { $regex: new RegExp(searchTerm.trim(), "i") } }
+                ]
+            });
+            
+            console.log(`✅ Found ${listings.length} listings for: "${searchTerm}"`);
+        } else {
+            // Show all listings if no search term
+            listings = await Listing.find({});
+            console.log(`✅ Showing all ${listings.length} listings`);
+        }
+        
+        res.render("listings/index", { 
+            listings,
+            search: searchTerm || '', // Pass search term to template
+            isSearchResult: !!searchTerm
+        });
+        
+    } catch (error) {
+        console.error("❌ Error fetching listings:", error);
+        req.flash("error", "An error occurred while loading listings. Please try again.");
+        res.render("listings/index", { 
+            listings: [],
+            search: '',
+            isSearchResult: false
+        });
+    }
+}));
+
+// Keep your existing search route as backup (optional)
+app.get("/search", wrapAsync(async (req, res) => {
+    const query = req.query.query || req.query.search;
+    
+    // Redirect to listings with search parameter
+    if (query && query.trim() !== '') {
+        return res.redirect(`/listings?search=${encodeURIComponent(query.trim())}`);
+    } else {
+        return res.redirect("/listings");
+    }
+}));
+
+// Import and use listing routes (but exclude the main /listings route since we defined it above)
+const listingRouter = require("./public/routes/listings.js");
+app.use("/listings", listingRouter);
+
 // Routes Configuration
 app.use("/", userRouter);
-app.use("/listings", listingRouter);
 
 // Additional Pages
 app.get("/special-deals", (req, res) => res.render("listings/special-deals"));
@@ -163,48 +200,57 @@ app.get("/profile", (req, res) => res.render("listings/profile"));
 app.get("/settings", (req, res) => res.render("listings/settings"));
 app.get("/my-bookings", (req, res) => res.render("listings/my-bookings"));
 
+// REMOVED: Debug middleware that was causing duplicate logging
+// The original debug middleware is now handled above before the Chrome DevTools filter
 
-// Add this debug middleware to your app.js to see all registered routes
-// Place this RIGHT AFTER your route definitions
-
-app.use((req, res, next) => {
-    console.log(`🔍 Incoming request: ${req.method} ${req.originalUrl}`);
-    next();
-});
-
-// Also add this to list all registered routes (for debugging)
-app._router.stack.forEach(function(r){
-  if (r.route && r.route.path){
-    console.log(`📍 Registered route: ${Object.keys(r.route.methods)} ${r.route.path}`);
-  }
-});
-
-// If you want to see what routes are available, add this temporary route:
-app.get("/debug-routes", (req, res) => {
-    const routes = [];
+// OPTIONAL: Route debugging (comment out in production)
+if (process.env.NODE_ENV !== 'production') {
     app._router.stack.forEach(function(r){
         if (r.route && r.route.path){
-            routes.push({
-                method: Object.keys(r.route.methods),
-                path: r.route.path
-            });
+            console.log(`📍 Registered route: ${Object.keys(r.route.methods)} ${r.route.path}`);
         }
     });
-    res.json(routes);
-});
 
-// Test your search route manually by visiting: http://localhost:10000/debug-routes
+    // Debug routes endpoint
+    app.get("/debug-routes", (req, res) => {
+        const routes = [];
+        app._router.stack.forEach(function(r){
+            if (r.route && r.route.path){
+                routes.push({
+                    method: Object.keys(r.route.methods),
+                    path: r.route.path
+                });
+            }
+        });
+        res.json(routes);
+    });
+}
 
-
-// 404 Handler
+// UPDATED: Better 404 handler that completely ignores Chrome DevTools requests
 app.all("*", (req, res, next) => {
+    // These requests should have been handled earlier, but just in case
+    if (req.originalUrl.includes('/.well-known/') || 
+        req.originalUrl.includes('/favicon.ico') ||
+        req.originalUrl.includes('chrome-extension://') ||
+        req.originalUrl === '/robots.txt' ||
+        req.originalUrl === '/sitemap.xml') {
+        return res.status(404).end();
+    }
+    
     const error = new Error(`Can't find ${req.originalUrl} on this server!`);
     error.status = 404;
     next(error);
 });
 
-// Error Handler
+// UPDATED: Error Handler with Chrome DevTools filtering
 app.use((err, req, res, next) => {
+    // Don't log errors for Chrome DevTools requests
+    if (req.originalUrl.includes('/.well-known/') || 
+        req.originalUrl.includes('/favicon.ico') ||
+        req.originalUrl.includes('chrome-extension://')) {
+        return res.status(404).end();
+    }
+
     console.error("❌ Global Error Handler:", err);
 
     let { status = 500, message = "Something went wrong!" } = err;
@@ -223,7 +269,6 @@ app.use((err, req, res, next) => {
 
     res.status(status).render("error.ejs", { error: err });
 });
-
 
 // Start Server
 const PORT = process.env.PORT || 10000;
